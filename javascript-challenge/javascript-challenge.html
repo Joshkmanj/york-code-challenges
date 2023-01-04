@@ -116,15 +116,9 @@
     
     
     if (uid.length >= 8 && uid.length <= 12){ // tests if UID is inside of 8 to 12 chars long. 
-      // ***********************(THIS LINE BELOW NEEDS TO BE REMOVED, OTHERWISE ALL OTHER VALUES COME BACK AS FALSE DESPITE IT BEING A PROBLEM OF UID LENGTH) ------------------------------------------------------------------------------------------------)
-      // return false; // If length fails, the function is stopped
-      console.log('verify inputs, FAILURE, length is:', uid.length);
-    } 
-    else { // if test passes, function continues
-      console.log('verify inputs, length is:', uid.length);
       uidRequirements.correctLength = true 
-    }
-
+      // console.log('verify inputs, length is:', uid.length);
+    } 
 
     // Next, a loop runs through each character of the password
       for (let i = 0; i < uid.length; i++) {
@@ -170,7 +164,6 @@
 
 
   function collectInputs (){ // This collects the inputs
-    console.log('(1/3) collecting inputs');
 
     // Store input data in global variables
     uid = document.getElementById('user-id').value
@@ -179,10 +172,7 @@
     birthday = document.getElementById('birthdate').value
     
     // --------- Test code ------------
-    console.log(uid); //---------------
-    console.log(fname);//--------------
-    console.log(lname);//--------------
-    console.log(birthday);//-----------
+    console.log(`collecting inputs: uid:${uid}, fname:${fname}, lname:${lname}, birthday:${birthday}`); //---------------
     // --------- Test code ------------
     
     
