@@ -1,18 +1,4 @@
-<!DOCTYPE html>
-<html>
-<body>
-
-
-<div class="input-holder">
-    <!-- <! put your HTML code to input data here > -->
-  <input type="text" id="user-id">
-  <input type="text" id="first-name">
-  <input type="text" id="last-name">
-  <input type="date" id="birthdate">
-  <button onclick="submissionHandler()">Accept</button>
-</div>
-
-<script>
+console.log('Client loaded');
 
   // Starting by initializing the variables that the page will store
     let uid;
@@ -21,14 +7,20 @@
     let birthday;
     let errorMessage = [];
 
-   
-    // --------- Test code ------------
-    console.log(uid);
-    console.log(fname);
-    console.log(lname);
-    console.log(birthday);
-    // --------- Test code ------------
 
+  // --------- Test code, delete this later ------------
+console.log(uid);
+console.log(fname);
+console.log(lname);
+ console.log(birthday);
+
+  function testSetup() {
+    document.getElementById('user-id').value = 'UserName57'
+    document.getElementById('first-name').value = 'Josh'
+    document.getElementById('last-name').value = 'Kralewski'
+    document.getElementById('birthdate').value = '1990-05-26'
+    }
+// --------- Test code, delete this later ------------
 
 
   function submissionHandler (){
@@ -39,7 +31,7 @@
 
 
     // Next, the input data is tested to ensure it passes requirements
-    testInputs();
+    verifyInputs();
 
 
 
@@ -50,22 +42,29 @@
 
 
 
-  function testInputs() {
-    // Initialize an array to take the variables
-    let uidArray = uid..
-    // The UserID must contain an uppercase, a lowercase, a number, and be 8 to 12 chars long. 
+  function verifyInputs() {
+    // Initialize a copy of the UID that can be manipulated without affecting original data
+    let uidCopy = uid
+
+    // The UserID must contain an uppercase, a lowercase, a number
     
+    // This tests for password length matching 8 to 12 chars long. 
     if(uid.length < 8 || uid.length > 12){
       console.log('uid is bad')
-      // errorMessage.push('Invalid UserID')
-      // console.log(errorMessage)
-      return; // If the userId length fails this test, it cancels the remaining uid tests
+       // errorMessage.push('Invalid UserID') // optional feature, can be deleted
+       // console.log(errorMessage) // test, can be deleted
+      return; // If the userId length fails, the test function is stopped
+    } else{
+      console.log('uid is good') // if test passes, function continues
     }
-      console.log('uid is good')
 
-      for (let i = 0; i < array.length; i++) {
-        const element = array[i];
+    // Next, uppercase and lowercase is tested
+      for (let i = 0; i < uid.length; i++) {
+        console.log('testing letter', uid[i], uid[i].toUpperCase());
         
+        // if(uid[i] === uid[i].toUppercase()){
+
+        // }
       }
 
 
@@ -157,11 +156,3 @@
 
 // Your code output should show in the Display window.  This serves as the equivalent of the browser window and shows the render of the DOM document you are coding.
 
-
-
-
-</script>
-
-</body>
-</html>
- 

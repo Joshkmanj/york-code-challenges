@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+  <html>
+    <body>
+
+
+<div class="input-holder">
+  <!-- <! put your HTML code to input data here > -->
+  <input type="text" id="user-id">
+  <input type="text" id="first-name">
+  <input type="text" id="last-name">
+  <input type="date" id="birthdate">
+  <button onclick="submissionHandler()">Accept</button>
+  
+  <!-- // --------- Test code, delete this later ------------ -->
+  <button onclick="testSetup()">testSetup</button>
+  <!-- // --------- Test code, delete this later ------------ -->
+</div>
+<div>
+  <p id="error-box">hi there</p>
+
+</div>
+
+<script>
+  console.log('Script starting');
+
+
+  // Starting by initializing the variables that the page will store
+    let uid;
+    let fname;
+    let lname;
+    let birthday;
+
+    // Error message stored as an object
+    let uidRequirements = {
+      correctLength: false,
+      containsNumber: false,
+      containsUppercase: false,
+      containsLowercase: false,
+      // containsSymbol: false, // This line and all others with label (extraFunction1.1) can be reintroduced to add additional functionality, specifically regarding symbol checking.
+    };
+
+
+    // ------------ Extra functions ------------------------
+    // These are function(s) that are extras, but can be found and reintroduced using the labels below.
+    // (extraFunction1.1) -- Introduces a symbol checker
+    // ------------ Extra functions ------------------------
+
+
+
+// --------- Test code, delete this later ------------------------------------------------
+  function testSetup() { // This writes test data into the input fields
+      // birthday = '05/26/1990'
+      document.getElementById('user-id').value = '$123- _UserN'
+      document.getElementById('first-name').value = 'Josh'
+      document.getElementById('last-name').value = 'Kralewski'
+      document.getElementById('birthdate').value = '1990-05-26'
+    }
+// --------- Test code, delete this later ------------------------------------------------
+
+
+  function submissionHandler (){ // This function handles the overarching processes required to submit data from the DOM
+    
+    // First, all data is collected from the inputs
+    collectInputs();
+    
+    
+    if ( verifyInputs() === true ) {  // Input data is tested to ensure it passes requirements
+      console.log('it passed the test!');
+    } else {
+      console.log('it failed the test! :(');
+      inputErrors(); // This describes what the error is
+      
+      // return; // Cancels the rest of function
+    }
+
+    // Lastly, all the inputs are reset
+    // resetInputs(); // Temporarily disabled for testing purposes
+  }
+
+
+  function inputErrors(){ // Tells user which error is preventing submission
+    if( uidRequirements.correctLength === false ){
+      document.getElementById("error-box").innerHTML = "User ID must be between 8 and 12 characters long";
+      console.log('Incorrect length');
+    }
+    if( uidRequirements.containsLowercase === false ){
+      document.getElementById("error-box").innerHTML = "User ID requires at least one lowercase letter";
+      console.log('Missing lowercase');
+    }
+    if( uidRequirements.containsUppercase === false ){
+      document.getElementById("error-box").innerHTML = "User ID requires at least one uppercase letter";
+      console.log('Missing uppercase');
+    }
+    if( uidRequirements.containsNumber === false ){
+      document.getElementById("error-box").innerHTML = "User ID requires at least one number";
+      console.log('Missing number');
+    }
+    // if( uidRequirements.containsSymbol === false ){ // This line and all others with label (extraFunction1.1) can be reintroduced to add additional functionality, specifically regarding symbol checking.
+      // document.getElementById("error-box").innerHTML = "User ID requires at least one symbol"; // This line and all others with label (extraFunction1.1) can be reintroduced to add additional functionality, specifically regarding symbol checking.
+      // console.log('Missing symbol'); // This line and all others with label (extraFunction1.1) can be reintroduced to add additional functionality, specifically regarding symbol checking.
+    // } // This line and all others with label (extraFunction1.1) can be reintroduced to add additional functionality, specifically regarding symbol checking.
+  }
+
+
+  function verifyInputs() { // Verifies UID is correct length and contains uppercase, lowercase, and number.
+
+    // Error messages are reset before verification
+    uidRequirements = {
+      correctLength: false,
+      containsNumber: false,
+      containsUppercase: false,
+      containsLowercase: false,
+      // containsSymbol: false, // This line and all others with label (extraFunction1.1) can be reintroduced to add additional functionality, specifically regarding symbol checking.
+    }
+
+    
+    
+    if (uid.length >= 8 && uid.length <= 12){ // tests if UID is inside of 8 to 12 chars long. 
+      // ***********************(THIS LINE BELOW NEEDS TO BE REMOVED, OTHERWISE ALL OTHER VALUES COME BACK AS FALSE DESPITE IT BEING A PROBLEM OF UID LENGTH) ------------------------------------------------------------------------------------------------)
+      // return false; // If length fails, the function is stopped
+      console.log('verify inputs, FAILURE, length is:', uid.length);
+    } 
+    else { // if test passes, function continues
+      console.log('verify inputs, length is:', uid.length);
+      uidRequirements.correctLength = true 
+    }
+
+
+    // Next, a loop runs through each character of the password
+      for (let i = 0; i < uid.length; i++) {
+        
+        // Checks for number:
+        if( uid[i] % 1 == 0 && uid[i] !=' ' ){ // If arithmetic can be performed, and it's not an empty space, then it's a number
+          uidRequirements.containsNumber = true;
+        } 
+
+        // Checks for symbol:
+        else if( uid[i] === uid[i].toUpperCase() && uid[i] === uid[i].toLowerCase() ){ //If the character doesn't change when capitalized AND set to lowercase, then it's a symbol
+          // containsSymbol = true; // This line and all others with label (extraFunction1.1) can be reintroduced to add additional functionality, specifically regarding symbol checking.
+        } 
+
+        // Checks for uppercase:
+        else if( uid[i] === uid[i].toUpperCase()){
+          uidRequirements.containsUppercase = true;
+        } 
+
+        // Checks for lowercase:
+        else if(uid[i] === uid[i].toLowerCase() ){
+          uidRequirements.containsLowercase = true;
+        } 
+
+        // This final step alerts the user to potential problems with the character
+        else {
+          console.warn(`Warning, "${uid[i]}" is not recognized as an uppercase, lowercase, symbol or number!`);
+        }
+      }
+
+
+      if ( uidRequirements.containsUppercase && uidRequirements.containsLowercase  && uidRequirements.containsNumber ){
+        return true;
+      }
+      else{
+        return false;
+      }
+
+
+
+  }
+
+
+
+  function collectInputs (){ // This collects the inputs
+    console.log('(1/3) collecting inputs');
+
+    // Store input data in global variables
+    uid = document.getElementById('user-id').value
+    fname = document.getElementById('first-name').value
+    lname = document.getElementById('last-name').value
+    birthday = document.getElementById('birthdate').value
+    
+    // --------- Test code ------------
+    console.log(uid); //---------------
+    console.log(fname);//--------------
+    console.log(lname);//--------------
+    console.log(birthday);//-----------
+    // --------- Test code ------------
+    
+    
+  }
+
+
+  function resetInputs (){ // This resets inputs and UID requirements
+    console.log('(3/3) resetting inputs');
+
+    // Inputs are reset to be blank
+    document.getElementById('user-id').value = ''
+    document.getElementById('first-name').value = ''
+    document.getElementById('last-name').value = ''
+    document.getElementById('birthdate').value = ''
+
+    // Error message gets reset when inputs are reset
+    uidRequirements = {
+      correctLength: false,
+      containsNumber: false,
+      containsUppercase: false,
+      containsLowercase: false,
+      // containsSymbol: false, // This line and all others with label (extraFunction1.1) can be reintroduced to add additional functionality, specifically regarding symbol checking.
+    };
+  }
+
+
+
+    // put your JavaScript code to read HTML inputs
+    // and validate inputs here using if statements
+    //// <------------------ C O M P L E T E D -----------------> /////
+    // and document.getElementById().innerHTML to display results
+    // write your JS functions here
+    // write your JS Loop For here to print the Xs
+    // use something like document.write(str.padStart(i,"x") + "<br>");
+        
+        // Starting with the HTML wrapper code in the Code Editor...
+
+// You may or may not use a <form>. Note that there is no backend process or program to submit a form to. 
+// If you use a form and submit, you must suppress the default action or the page will clear/load unpredictable results.
+
+// Ask the user to input their first name, last name, a UserID, and a birthdate in type date format.  The UserID must contain an uppercase, a lowercase, a number, and be 8 to 12 chars long.  
+
+// Create a JS function to verify formats of the UserID field.
+
+// You will either need to use a For loop to iterate through your data fields character by character with JS functions like char.toUpperCase() and parsInt(char), or use Regular Expressions, to validate the UserID format.
+
+// Use the following variables (with exact variable names) to hold the data:
+
+// uid is UserID.
+
+// fname is first name.
+
+// lname is last name.
+
+// birthday is birthday, using type 'date'.
+
+// You have to write a function called “dateDiff” that accepts one date parameter and returns the number of days between the birthday provided and the current date.
+
+// Create an “Accept” button to execute your functions and create the following output:
+
+// If the UserID does not pass your verification, then print “Invalid UserID” to the Display window.
+
+// If the fname, lname, or birthday fields are left empty then print “Invalid fname” etc…
+
+// Print “fname lname you have been breathing for ### days!” where ### is the number returned by your dateDiff() function.  Remember to convert milliseconds to days and only return the integer (whole) number of days.
+
+// If the number of days is less than (365*18) then print “You are probably not old enough to take this class!”
+
+// Use document.getElementById().innerHtml to display results and information messages on the Display window.
+
+// Create a "For loop” that loops 20 times and uses code similar to:
+
+// let str = "";
+// str = str.padStart(i,”x”); // i is the loop counter
+
+// to print 20 lines of Xs from 1 to 20 Xs.  The first line should have a single X and the 20th line should have 20 Xs.
+
+// Your Xs should be printed on the Display page as depicted in the example below.
+
+// Make sure you understand and can explain a For Loop, padStart(i,"X"), innerHTML and what the DOM (Document Object Model) is.
+
+// Your code output should show in the Display window.  This serves as the equivalent of the browser window and shows the render of the DOM document you are coding.
+
+
+
+
+</script>
+
+</body>
+</html>
+ 
