@@ -24,44 +24,47 @@
   console.log('Script starting');
 
 
+  // --------------------------< G L O B A L  V A R I A B L E S >-----------------------------
   // Starting by initializing the variables that the page will store
-    let uid;
-    let fname;
-    let lname;
-    let birthday;
+  let uid;
+  let fname;
+  let lname;
+  let birthday;
+  
+  // Error messages are stored as an array
+  let errorMessageArray = [];
+  
+  // Error status stored as an object
+  let uidRequirements = {
+    correctLength: false,
+    containsNumber: false,
+    containsUppercase: false,
+    containsLowercase: false,
+    // containsSymbol: false, // This line and all others with label (extraFunction1.1) can be reintroduced to add additional functionality, specifically regarding symbol checking.
+  };
+  // --------------------------< E N D  G L O B A L  V A R I A B L E S >-----------------------------
 
-    // Error messages are stored as an array
-    let errorMessageArray = [];
-
-    // Error status stored as an object
-    let uidRequirements = {
-      correctLength: false,
-      containsNumber: false,
-      containsUppercase: false,
-      containsLowercase: false,
-      // containsSymbol: false, // This line and all others with label (extraFunction1.1) can be reintroduced to add additional functionality, specifically regarding symbol checking.
-    };
-
-
-
-    // ------------ Extra functions ------------------------
-      // These are function(s) that are extras, but can be found and reintroduced using the labels below.
-      // (extraFunction1.1) -- Introduces a symbol checker
-    // ------------ Extra functions ------------------------
-
-
-
-// --------- Test code, delete this later ------------------------------------------------
+  
+  
+  // ------------------------< T E S T S  A N D  E X T R A S >---------------------------------
+  // ------------ Extra functions ---------------
+  // These are function(s) that are extras, but can be found and reintroduced using the labels below.
+  // (extraFunction1.1) -- Introduces a symbol checker
+  // ------------ Extra functions ---------------
+  
+  // --------- Test code, delete this later ------
   function testSetup() { // This writes test data into the input fields
-      // birthday = '05/26/1990'
-      document.getElementById('user-id').value = '$123- _UserN'
-      document.getElementById('first-name').value = 'Josh'
-      document.getElementById('last-name').value = 'Kralewski'
-      document.getElementById('birthdate').value = '1990-05-26'
-    }
-// --------- Test code, delete this later ------------------------------------------------
+    // birthday = '05/26/1990'
+    document.getElementById('user-id').value = '$123- _UserN'
+    document.getElementById('first-name').value = 'Josh'
+    document.getElementById('last-name').value = 'Kralewski'
+    document.getElementById('birthdate').value = '1990-05-26'
+  }
+  // ---------^^ END Test code, delete this later ^^-------
+  // ------------------------< E N D  T E S T S  A N D  E X T R A S >---------------------------------
 
 
+  // --------------------------< I N P U T  H A N D L E R S >-----------------------------
   function submissionHandler (){ // This function handles the overarching processes required to submit data from the DOM
     
     // First, all data is collected from the inputs
@@ -72,7 +75,7 @@
     
     if ( Object.values(uidRequirements).includes(false) ) {  
       console.log('it failed the test, examining errors!');
-      inputErrors(); // This describes what the error is
+      displayErrors(); // This describes what the error is
     } else {
       console.log('it passed the test!');
       // return; // Cancels the rest of function
@@ -81,41 +84,22 @@
     // Lastly, all the inputs are reset
     // resetInputs(); // Temporarily disabled for testing purposes
   }
-
-
-  function inputErrors(){ // Tells user which error is preventing submission
-
-    if( uidRequirements.correctLength === false ){
-      errorMessageArray.push("User ID must be between 8 and 12 characters long.");
-      console.log('Incorrect length');
-    }
-    if( uidRequirements.containsLowercase === false ){
-      errorMessageArray.push("User ID requires at least one lowercase letter.");
-      console.log('Missing lowercase');
-    }
-    if( uidRequirements.containsUppercase === false ){
-      errorMessageArray.push("User ID requires at least one uppercase letter.");
-      console.log('Missing uppercase');
-    }
-    if( uidRequirements.containsNumber === false ){
-      errorMessageArray.push("User ID requires at least one number.");
-      console.log('Missing number');
-    }
-    // if( uidRequirements.containsSymbol === false ){ // This line and all others with label (extraFunction1.1) can be reintroduced to add additional functionality, specifically regarding symbol checking.
-      // errorMessageArray.push("User ID requires at least one symbol."); // This line and all others with label (extraFunction1.1) can be reintroduced to add additional functionality, specifically regarding symbol checking.
-      // console.log('Missing symbol'); // This line and all others with label (extraFunction1.1) can be reintroduced to add additional functionality, specifically regarding symbol checking.
-    // } // This line and all others with label (extraFunction1.1) can be reintroduced to add additional functionality, specifically regarding symbol checking.
-  
     
-    // TEST
-    document.getElementById("error-box").innerHTML = errorMessageArray.map(message => 
-        `<div>${message}</div>`
-    ).join('');
-    // TEST
+  
+  function collectInputs (){ // This collects the inputs
 
-      // All error messages are compiled, then displayed on D.O.M.
-      // document.getElementById("error-box").innerHTML = errorMessageArray; // Temporarily disabled for .map testing a few lines above
-  }
+    // Store input data in global variables
+    uid = document.getElementById('user-id').value
+    fname = document.getElementById('first-name').value
+    lname = document.getElementById('last-name').value
+    birthday = document.getElementById('birthdate').value
+
+    // --------- Test code ------------
+    console.log(`collecting inputs: uid:${uid}, fname:${fname}, lname:${lname}, birthday:${birthday}`); //---------------
+    // --------- Test code ------------
+
+  }// End collectInputs
+
 
 
   function verifyInputs() { // Verifies UID is correct length and contains uppercase, lowercase, and number.
@@ -127,7 +111,6 @@
     // tests if UID is inside of 8 to 12 chars long. 
     if (uid.length >= 8 && uid.length <= 12){ 
       uidRequirements.correctLength = true 
-      // console.log('verify inputs, length is:', uid.length);
     } 
 
     // Next, a loop runs through each character of the password
@@ -158,28 +141,10 @@
         console.warn(`Warning, "${uid[i]}" is not recognized as an uppercase, lowercase, symbol or number!`);
       }
     } // End Loop
-  }
-
-
-
-  function collectInputs (){ // This collects the inputs
-
-    // Store input data in global variables
-    uid = document.getElementById('user-id').value
-    fname = document.getElementById('first-name').value
-    lname = document.getElementById('last-name').value
-    birthday = document.getElementById('birthdate').value
-    
-    // --------- Test code ------------
-    console.log(`collecting inputs: uid:${uid}, fname:${fname}, lname:${lname}, birthday:${birthday}`); //---------------
-    // --------- Test code ------------
-    
-    
-  }
+  } // End verifyInputs
 
 
   function resetInputs (){ // This resets inputs and UID requirements
-    console.log('(3/3) resetting inputs');
 
     // Inputs are reset to be blank
     document.getElementById('user-id').value = ''
@@ -187,11 +152,53 @@
     document.getElementById('last-name').value = ''
     document.getElementById('birthdate').value = ''
 
-    // Error message gets reset when inputs are reset
+    // Error messaging is reset when inputs are reset
     resetErrors()
-  }
 
-    function resetErrors (){
+  } // End resetInputs
+  // --------------------------< E N D  I N P U T  H A N D L E R S >-----------------------------
+
+
+
+
+  // --------------------------< E R R O R  H A N D L E R S >-----------------------------
+
+  function displayErrors(){ // Tells user which error is preventing submission
+
+    if( uidRequirements.correctLength === false ){
+      errorMessageArray.push("User ID must be between 8 and 12 characters long.");
+      console.log('Incorrect length');
+    }
+    if( uidRequirements.containsLowercase === false ){
+      errorMessageArray.push("User ID requires at least one lowercase letter.");
+      console.log('Missing lowercase');
+    }
+    if( uidRequirements.containsUppercase === false ){
+      errorMessageArray.push("User ID requires at least one uppercase letter.");
+      console.log('Missing uppercase');
+    }
+    if( uidRequirements.containsNumber === false ){
+      errorMessageArray.push("User ID requires at least one number.");
+      console.log('Missing number');
+    }
+    // if( uidRequirements.containsSymbol === false ){ // This line and all others with label (extraFunction1.1) can be reintroduced to add additional functionality, specifically regarding symbol checking.
+      // errorMessageArray.push("User ID requires at least one symbol."); // This line and all others with label (extraFunction1.1) can be reintroduced to add additional functionality, specifically regarding symbol checking.
+      // console.log('Missing symbol'); // This line and all others with label (extraFunction1.1) can be reintroduced to add additional functionality, specifically regarding symbol checking.
+    // } // This line and all others with label (extraFunction1.1) can be reintroduced to add additional functionality, specifically regarding symbol checking.
+
+
+    // TEST
+    document.getElementById("error-box").innerHTML = errorMessageArray.map(message => 
+        `<div>${message}</div>`
+    ).join('');
+    // TEST
+
+      // All error messages are compiled, then displayed on D.O.M.
+      // document.getElementById("error-box").innerHTML = errorMessageArray; // Temporarily disabled for .map testing a few lines above
+  } // End displayErrors
+
+
+    function resetErrors (){ // This resets all error data
 
       // UID requirement checks are reset
       uidRequirements = {
@@ -207,7 +214,9 @@
 
       // Any errors that were displayed on the dom are removed
       document.getElementById("error-box").innerHTML = '';
-    }
+    } // End resetErrors
+  // --------------------------< E N D  E R R O R  H A N D L E R S >-----------------------------
+
 
 
 
